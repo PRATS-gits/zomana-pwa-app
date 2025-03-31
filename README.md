@@ -47,10 +47,10 @@ This will create an optimized build in the `dist` directory.
 
 1.  Configure the base URL in `vite.config.ts`:
 
-Ensure the `base` property in `vite.config.ts` is set correctly for your repository:
+Ensure the `base` property in `vite.config.ts` is set to '/':
 
 ```typescript
-base: process.env.NODE_ENV === 'production' ? '/mad-zomana-pwa/' : '/',
+base: '/',
 ```
 
 2.  Deploy to GitHub Pages:
