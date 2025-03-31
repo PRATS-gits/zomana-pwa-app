@@ -1,4 +1,3 @@
-
 import * as React from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
@@ -9,6 +8,9 @@ import { MainLayout } from "./components/layout/MainLayout";
 import { ShoppingCart } from "./components/ui-components/ShoppingCart";
 import { CartProvider } from "./contexts/CartContext";
 import { AuthProvider } from "./contexts/AuthContext";
+import PWAUpdateToast from "./components/ui/pwa-update-toast";
+import InstallPWA from "./components/ui/install-pwa";
+import OfflineIndicator from "./components/ui/offline-indicator";
 import Index from "./pages/Index";
 import Products from "./pages/Products";
 import NewArrivals from "./pages/NewArrivals";
@@ -72,6 +74,9 @@ const App = () => (
               </Routes>
               <ShoppingCart />
               <Sonner />
+              <PWAUpdateToast />
+              <InstallPWA />
+              <OfflineIndicator />
             </CartProvider>
           </AuthProvider>
         </TooltipProvider>

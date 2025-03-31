@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -20,6 +19,20 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="theme-color" content="#000000" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Zomana">
+    
+    <!-- Web App Manifest -->
+    <link rel="manifest" href="./manifest.json" />
+    
+    <!-- PWA Icons -->
+    <link rel="apple-touch-icon" href="./icons/icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192x192.png">
+    <link rel="shortcut icon" href="./favicon.ico">
 
     <style>
       /* Add font loading styles to avoid layout shifts */
@@ -34,5 +47,41 @@
     <!-- IMPORTANT: DO NOT REMOVE THIS SCRIPT TAG OR THIS VERY COMMENT! -->
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
+
+    <!-- Register Service Worker -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+          navigator.serviceWorker.register('./sw.js')
+            .then(function(registration) {
+              console.log('ServiceWorker registration successful with scope: ', registration.scope);
+              
+              // Check for updates
+              registration.addEventListener('updatefound', () => {
+                const newWorker = registration.installing;
+                newWorker.addEventListener('statechange', () => {
+                  if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                    console.log('New content is available; please refresh.');
+                  } else if (newWorker.state === 'activated') {
+                    console.log('Content is now available offline!');
+                  }
+                });
+              });
+            }).catch(function(err) {
+              console.log('ServiceWorker registration failed: ', err);
+            });
+          
+          // Handle offline detection
+          window.addEventListener('online', () => {
+            document.body.classList.remove('offline');
+            console.log('Application is online');
+          });
+          window.addEventListener('offline', () => {
+            document.body.classList.add('offline');
+            console.log('Application is offline');
+          });
+        });
+      }
+    </script>
   </body>
 </html>
