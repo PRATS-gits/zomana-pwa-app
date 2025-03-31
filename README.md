@@ -91,7 +91,7 @@ This will create an optimized build in the `dist` directory, including all PWA a
 
 1.  Configure the base URL in `vite.config.ts`:
 
-Ensure the `base` property in `vite.config.ts` is set to '/':
+Ensure the `base` property in `vite.config.ts` is set to '/zomana-pwa-app':
 
 ```typescript
 base: '/zomana-pwa-app/',
