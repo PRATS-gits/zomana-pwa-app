@@ -1,0 +1,14 @@
+This file is a placeholder for the 192x192 pixel icon.
+
+In a real application, you would need to create proper PNG image files for each icon size:
+- icon-72x72.png
+- icon-96x96.png
+- icon-128x128.png
+- icon-144x144.png
+- icon-152x152.png
+- icon-192x192.png
+- icon-384x384.png
+- icon-512x512.png
+
+For a production application, you should use image editing software to create these icons
+from your application logo at the appropriate resolutions. 

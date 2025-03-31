@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Offline - Zomana</title>
+  <style>
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+      background-color: #f8f9fa;
+      color: #333;
+    }
+    .offline-container {
+      max-width: 500px;
+      padding: 30px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      margin-bottom: 10px;
+      font-size: 1.8rem;
+    }
+    p {
+      margin: 15px 0;
+      line-height: 1.6;
+      color: #555;
+    }
+    img {
+      width: 100px;
+      height: 100px;
+      margin-bottom: 20px;
+    }
+    .retry-button {
+      background-color: #000;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.3s;
+    }
+    .retry-button:hover {
+      background-color: #333;
+    }
+  </style>
+</head>
+<body>
+  <div class="offline-container">
+    <img src="/icons/icon-192x192.png" alt="Zomana Logo">
+    <h1>You're offline</h1>
+    <p>It seems you're not connected to the internet. Please check your connection and try again.</p>
+    <p>Don't worry, some of Zomana's features are still available offline for browsing.</p>
+    <button class="retry-button" onclick="window.location.reload()">Try Again</button>
+  </div>
+
+  <script>
+    // Check periodically if the connection is restored
+    setInterval(function() {
+      if (navigator.onLine) {
+        window.location.reload();
+      }
+    }, 5000);
+  </script>
+</body>
+</html> 
