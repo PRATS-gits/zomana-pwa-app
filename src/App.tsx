@@ -37,10 +37,13 @@ import HomeKitchenCategory from "./pages/category/HomeKitchenCategory";
 
 const queryClient = new QueryClient();
 
+// Get the base URL from the Vite config for GitHub Pages
+const BASE_PATH = import.meta.env.BASE_URL;
+
 const App = () => (
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
+      <BrowserRouter basename={BASE_PATH}>
         <TooltipProvider>
           <AuthProvider>
             <CartProvider>

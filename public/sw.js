@@ -2,23 +2,27 @@ const CACHE_NAME = 'zomana-cache-v1';
 const STATIC_CACHE_NAME = 'zomana-static-v1';
 const DYNAMIC_CACHE_NAME = 'zomana-dynamic-v1';
 
+// Base path for GitHub Pages
+const BASE_PATH = '/zomana-pwa-app';
+
 // Assets that should be cached on install (core static assets)
 const STATIC_ASSETS = [
-  './',
-  './index.html',
-  './offline.html',
-  './manifest.json',
-  './serviceWorkerRegistration.js',
-  './favicon.ico',
-  './placeholder.svg',
-  './icons/icon-72x72.png',
-  './icons/icon-96x96.png',
-  './icons/icon-128x128.png',
-  './icons/icon-144x144.png',
-  './icons/icon-152x152.png',
-  './icons/icon-192x192.png',
-  './icons/icon-384x384.png',
-  './icons/icon-512x512.png'
+  `${BASE_PATH}/`,
+  `${BASE_PATH}/index.html`,
+  `${BASE_PATH}/offline.html`,
+  `${BASE_PATH}/404.html`,
+  `${BASE_PATH}/manifest.json`,
+  `${BASE_PATH}/sw.js`,
+  `${BASE_PATH}/favicon.ico`,
+  `${BASE_PATH}/placeholder.svg`,
+  `${BASE_PATH}/icons/icon-72x72.png`,
+  `${BASE_PATH}/icons/icon-96x96.png`,
+  `${BASE_PATH}/icons/icon-128x128.png`,
+  `${BASE_PATH}/icons/icon-144x144.png`,
+  `${BASE_PATH}/icons/icon-152x152.png`,
+  `${BASE_PATH}/icons/icon-192x192.png`,
+  `${BASE_PATH}/icons/icon-384x384.png`,
+  `${BASE_PATH}/icons/icon-512x512.png`
 ];
 
 // Install a service worker
@@ -47,8 +51,20 @@ self.addEventListener('message', (event) => {
   }
 });
 
+// Helper function to check if URL belongs to our app
+function isOurUrl(url) {
+  return url.includes(self.location.origin) && 
+    (url.startsWith(self.location.origin + BASE_PATH) || 
+     url === self.location.origin + '/');
+}
+
 // Cache and return requests using a stale-while-revalidate strategy for most resources
 self.addEventListener('fetch', event => {
+  // Skip cross-origin requests
+  if (!event.request.url.startsWith(self.location.origin)) {
+    return;
+  }
+  
   const requestUrl = new URL(event.request.url);
   
   // Handling navigation requests
@@ -56,7 +72,7 @@ self.addEventListener('fetch', event => {
     event.respondWith(
       fetch(event.request)
         .catch(() => {
-          return caches.match('./offline.html');
+          return caches.match(`${BASE_PATH}/offline.html`);
         })
     );
     return;
@@ -67,18 +83,15 @@ self.addEventListener('fetch', event => {
     return;
   }
   
-  // Skip cross-origin requests and API requests
-  if (
-    !requestUrl.origin.includes(self.location.origin) || 
-    requestUrl.pathname.includes('/api/')
-  ) {
+  // Skip API requests
+  if (requestUrl.pathname.includes('/api/')) {
     return;
   }
   
   // For static assets - cache first, network as fallback
   if (
     requestUrl.pathname.match(/\.(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot)$/) ||
-    STATIC_ASSETS.includes(requestUrl.pathname.replace(/^\//, './'))
+    STATIC_ASSETS.includes(requestUrl.pathname)
   ) {
     event.respondWith(
       caches.match(event.request)
@@ -103,7 +116,7 @@ self.addEventListener('fetch', event => {
             .catch(error => {
               // For image requests, you could serve a fallback image
               if (event.request.destination === 'image') {
-                return caches.match('./placeholder.svg');
+                return caches.match(`${BASE_PATH}/placeholder.svg`);
               }
               
               throw error;
@@ -144,7 +157,7 @@ self.addEventListener('fetch', event => {
         
         // If both cache and network fail
         if (event.request.destination === 'image') {
-          return caches.match('./placeholder.svg');
+          return caches.match(`${BASE_PATH}/placeholder.svg`);
         }
         
         // Return a default empty response for other resources
